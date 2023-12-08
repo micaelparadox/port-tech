@@ -1,8 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import apiRoutes from './api/routes';
-import { conectarMySQL } from './database/mysql';
-import { conectarMongoDB } from './database/mongodb';
+import { MysqlService } from './database/mysqlService';
 
 dotenv.config();
 
@@ -13,16 +12,18 @@ app.use(express.json());
 app.use('/api', apiRoutes);
 
 async function bootstrap() {
+    const mysqlService = new MysqlService();
+
     try {
-        const dbMySQL = await conectarMySQL();
-        const dbMongoDB = await conectarMongoDB();
+        await mysqlService.conectar(); // Connects to MySQL
+        console.debug("Connected to MySQL server!");
 
         app.listen(PORT, () => {
-            console.log(`Servidor rodando em http://localhost:${PORT}`);
+            console.log(`Server running at http://localhost:${PORT}`);
         });
 
     } catch (error) {
-        console.error('Erro durante a inicialização da aplicação:', error);
+        console.error('Error during application initialization:', error);
         process.exit(1);
     }
 }

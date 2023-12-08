@@ -2,8 +2,9 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.send('API Root');
+router.get('/hi', (req, res) => {
+    console.log("cheguei aqui");
+    res.send('API Root');
 });
 
 export default router;
